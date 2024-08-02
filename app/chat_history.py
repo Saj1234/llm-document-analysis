@@ -20,7 +20,7 @@ def save_chat_history(session_id, chat_history):
     data = {"chat_history": chat_history}
 
     json_data = json.dumps(data, indent=4)
-    with open(file_path, encoding="utf-8") as outfile:
+    with open(file_path, "w", encoding="utf-8") as outfile:
         outfile.write(json_data)
 
 def clear_chat_history():

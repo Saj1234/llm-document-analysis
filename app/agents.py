@@ -1,6 +1,5 @@
 import os
 import os.path
-import sys
 from dotenv import find_dotenv, load_dotenv
 from langchain.agents import (
     AgentExecutor,
@@ -9,21 +8,14 @@ from langchain.agents import (
 )
 import openai
 from langchain_openai import ChatOpenAI
-from langchain.schema import SystemMessage, AIMessage
+from langchain.schema import SystemMessage
 from langchain.prompts import MessagesPlaceholder
 from tools_loader import load_tools
-from tools_loader import load_tools
-
-# TODO: URLs to be passed as arguments
-DEFAULT_DOCUMENT_URL = (
-    "https://sachatgptintegration.blob.core.windows.net/contracts/DefaultContract.pdf"
-)
-UPDATED_DOCUMENT_URL = (
-    "https://sachatgptintegration.blob.core.windows.net/contracts/CustomContract.pdf"
-)
 
 load_dotenv(find_dotenv())
 
+DEFAULT_DOCUMENT_URL = os.getenv("DEFAULT_DOCUMENT_URL")
+UPDATED_DOCUMENT_URL = os.getenv("UPDATED_DOCUMENT_URL")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 llm_model = os.getenv("OPENAI_MODEL")
 
