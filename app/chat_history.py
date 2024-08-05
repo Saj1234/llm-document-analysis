@@ -1,7 +1,7 @@
 import os
 import os.path
 import json
-
+# TODO Update chat history management with a document database such as MonogoDB.
 def load_chat_history(session_id):
     """Function loading saved chat history."""
     # Check if file exist with session id. if not, this is a new conversation
