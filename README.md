@@ -14,7 +14,7 @@ Explore the [LangChain Default Tools](https://python.langchain.com/v0.1/docs/int
 ## Running the Application Locally
 
 ### Environment Variables
-We are using OpenAI, Google and Tavily as our agent tools do perform the document comparison and fetch updated using the power of LLMs. Each service needs their API keys to use their services. There are limitations and quotas for each platform. You can find more information on this on their websites. 
+We are using OpenAI, Google and Tavily as our agent tools perform the document comparison and fetch information using the power of LLMs. Each service needs their API keys to use their services. There are limitations and quotas for each platform. You can find more information on this on their websites. 
 
 This app loads the API keys from each service from the environment variables. When running locally, you can create a .env file and add API keys and other relevant information you want load and read within the app as environment variables. 
 
