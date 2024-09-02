@@ -1,5 +1,5 @@
 from flask import Flask, request, abort
-from app import answer_question
+from qna import answer_question
 
 # create a Flask instance
 app = Flask(__name__)
@@ -21,6 +21,10 @@ def ask():
             answer = answer_question(session_id, question)
             return answer
 
-        return abort(500, "'session_id' or 'question' parameter missing.") 
+        return abort(500, "'session_id' or 'question' parameter missing.")
 
     return abort(500, "Invalid request.") 
+
+if __name__ == "__main__":
+	# for debugging locally
+	app.run(debug=True, host='0.0.0.0',port=5000, threaded=True)
