@@ -1,41 +1,40 @@
 import os
 import os.path
-import json
-# TODO Update chat history management with a document database such as MonogoDB.
-def load_chat_history(session_id):
-    """Function loading saved chat history."""
-    # Check if file exist with session id. if not, this is a new conversation
-    file_path = "./temp/" + session_id + ".json"
-    if os.path.isfile(file_path):
-        file = open(file_path, encoding="utf-8")
-        data = json.load(file)
-        if "chat_history" in data:
-            return data["chat_history"]
+from dotenv import find_dotenv, load_dotenv
+import pymongo
 
-    return []
+db_name = "llm_app_db"
+db_collection_name = "collection_chat_history"
+document_property_name_session_id = "session_id"
+document_property_name_chat_history = "chat_history"
+
+load_dotenv(find_dotenv())
+DATABASE_CONNECTION_URL = os.getenv("DATABASE_CONNECTION_URL")
+
+mongodb_client = pymongo.MongoClient(DATABASE_CONNECTION_URL)
+mongodb_database = mongodb_client[db_name]
+db_collection = mongodb_database[db_collection_name]
+
+def get_chat_history(session_id):
+    """Function loading saved chat history from the database."""
+
+    query = { document_property_name_session_id : session_id }
+    session_history =  db_collection.find_one(query)
+    if not session_history:
+       return []
+    
+    return session_history[document_property_name_chat_history]
 
 def save_chat_history(session_id, chat_history):
-    """Function saving chat history."""
-    file_path = "./temp/" + session_id + ".json"
-    data = {"chat_history": chat_history}
+    """Function saving chat history in the database."""
+    # update 'data' if 'name' exists otherwise insert new document
+    db_collection.find_one_and_update(
+                          { document_property_name_session_id : session_id },
+                          { "$set":{ document_property_name_chat_history : chat_history }},
+                        upsert=True)
+    
+def clear_chat_history(session_id):
+    """Function clearing chat history for session_id from the database."""
 
-    json_data = json.dumps(data, indent=4)
-    with open(file_path, "w", encoding="utf-8") as outfile:
-        outfile.write(json_data)
-
-def clear_chat_history():
-    """Function clearing temp chat history files."""
-    try:
-        directory_path = "./temp"
-        files = os.listdir(directory_path)
-
-        for file in files:
-            file_path = os.path.join(directory_path, file)
-
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-
-        return "All temp files deleted successfully."
-
-    except OSError:
-        return "Error occurred while deleting files."
+    query = { document_property_name_session_id : session_id }
+    db_collection.delete_one(query)
