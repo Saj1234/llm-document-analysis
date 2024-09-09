@@ -43,18 +43,15 @@ For maintaining chat history, app uses MonogDB database. For testing locally, th
 
 2. Running MongoDB as a Docker Container.
 Running MongDB in a container would be the easier option. 
-Detailed instructions on running MongoDB in a docker container can be found [here](https://www.mongodb.com/resources/products/compatibilities/docker)
- 
-
-Alternatively you can pull the MondoDB Docker image and run it locally. Detailed instructions [here](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-community-with-docker/)
+You can pull the MongoDB Docker image and run it locally. Detailed instructions [here](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-community-with-docker/)
 ```bash
 docker run --name mongodb -p 27017:27017 -d mongodb/mongodb-community-server:latest
 ```
 Once the container stars the MongoDB connection will be on `mongodb://localhost:27017/`
 
 
-1. Running the app as a Chat Application
-You can run this app locally as a chat application using the `app.py` file. The app has been tested with Python 3.12.1. Make sure the MongoDB database is setup properly and with either the docker container option or the local installation options. Runnng on the docker container would be the easier option for testing locally. 
+1. Running the app as a Chat Application  
+You can run this app locally as a chat application using the `app.py` file. The app has been tested with Python 3.12.1. Make sure the MongoDB database is setup properly and with either the docker container option or the local installation options. Runnng on the docker container would be the easier option for testing locally.  
    
 - Create a `.env` file inside the `app` folder with the following content and set the values such API Keys other relevant information:
 
@@ -93,13 +90,13 @@ Question: Explain {one of the listed updates from the previous response} in deta
 2. Running as an API app
 
 App can be used as an API using the `api.py` file as the starting point. Below instructions are to run the API app in a docker container and the MongoDB database base to be run in a separate container. 
-When running both app and the MongoDB database in separate containers, the APP should be able to connect to the MongoDB database instance running in a separate container. 
+When running both app and the MongoDB database in separate containers, the APP should be able to connect to the MongoDB database instance running in a separate container.    
 See the all options with running MongoDB database in a container and connecting to it [here](https://www.mongodb.com/resources/products/compatibilities/docker)
 
 Using a docker compose file will be easier to get the containers linked and run the app. Below show how you can rung each container individually and get it working. 
 
 1. Build the main app using the Dockerfile and create an image. 
-   Including Dockerfile arguments can be useful for automated builds, as they allow you to pass variables from your CI/CD pipeline directly into the Dockerfile.
+   Including Dockerfile arguments can be useful for automated builds, as they allow you to pass variables from your CI/CD pipeline directly into the Dockerfile.  
    When running the Docker container locally, you can also pass these Dockerfile arguments directly from the command line using the following syntax:
 
    ```bash
@@ -114,7 +111,7 @@ Using a docker compose file will be easier to get the containers linked and run 
           --build-arg UPDATED_DOCUMENT_URL=updated_document_web_url \
           --build-arg DATABASE_CONNECTION_URL="mongodb://llm-mongodb:27017" 
    ```
-2. Running the app and the MongoDB database in their own containers. 
+2. Running the app and the MongoDB database in their own containers.   
    Since the there are two container running which needs to be communitcating with each other, it makes sense to run the container in the same docker network. 
    Once you have you docker network created you can specify the network name with the `--network` with `docker run` command. 
 
@@ -128,7 +125,7 @@ Using a docker compose file will be easier to get the containers linked and run 
    ```bash
     docker network create llm-network
    ```
-   Once you have the network, both the MongoDB container and the app container can be run in the same network 
+   Once you have the network, both the MongoDB container and the app container can be run in the same network.  
 
    - **Running the MongoDB container**
    ```bash
