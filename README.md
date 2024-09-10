@@ -36,8 +36,8 @@ Application maintains chat history by saving session specific chat history in Mo
 ### Chat history with MongoDB database
 Each session generates a unique session ID, and the chat history is saved under this ID, allowing you to review past interactions.
 
-For maintaining chat history, app uses MonogDB database.  
-For testing locally, there are couple of options you can consider if you dont have a MongoDB setup in your local machine. The app is using MongoDB Community Server. Alternatively you can choose to use [MobgoDB Atlas](https://www.mongodb.com/atlas/database).
+For maintaining chat history, app uses MongoDB database.  
+For testing locally, there are couple of options you can consider if you don't have a MongoDB setup in your local machine. The app is using MongoDB Community Server. Alternatively you can choose to use [MongoDB Atlas](https://www.mongodb.com/atlas/database).
 
 1. Download MongoDB Community Server.  
 You can download the community version of [MongoDB here](https://www.mongodb.com/try/download/community) and setup locally. 
@@ -117,7 +117,7 @@ Using a docker compose file will be easier to get the containers linked and run 
           --build-arg DATABASE_CONNECTION_URL="mongodb://llm-mongodb:27017" 
    ```
 2. ***Running the app and the MongoDB database in their own containers.***   
-   Since the there are two container running which needs to be communitcating with each other, it makes sense to run the container in the same docker network.  
+   Since the there are two container running which needs to be communicating with each other, it makes sense to run the container in the same docker network.  
      
    When you have you docker network created you can specify the network name with the `--network` with `docker run` command. 
 
