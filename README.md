@@ -36,13 +36,14 @@ Application maintains chat history by saving session specific chat history in Mo
 ### Chat history with MongoDB database
 Each session generates a unique session ID, and the chat history is saved under this ID, allowing you to review past interactions.
 
-For maintaining chat history, app uses MonogDB database. For testing locally, there are couple of options you can consider if you dont have a MongoDB setup in your local machine. The app is using MongoDB Community Server. Alternatively you can choose to use [MobgoDB Atlas](https://www.mongodb.com/atlas/database).
+For maintaining chat history, app uses MonogDB database.  
+For testing locally, there are couple of options you can consider if you dont have a MongoDB setup in your local machine. The app is using MongoDB Community Server. Alternatively you can choose to use [MobgoDB Atlas](https://www.mongodb.com/atlas/database).
 
-1. Download MongoDB Community Server
- You can download the community version of [MongoDB here](https://www.mongodb.com/try/download/community) and setup locally. 
+1. Download MongoDB Community Server.  
+You can download the community version of [MongoDB here](https://www.mongodb.com/try/download/community) and setup locally. 
 
-2. Running MongoDB as a Docker Container.
-Running MongDB in a container would be the easier option. 
+2. Running MongoDB as a Docker Container.  
+Running MongDB in a container would be the easier option.  
 You can pull the MongoDB Docker image and run it locally. Detailed instructions [here](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-community-with-docker/)
 ```bash
 docker run --name mongodb -p 27017:27017 -d mongodb/mongodb-community-server:latest
@@ -50,8 +51,10 @@ docker run --name mongodb -p 27017:27017 -d mongodb/mongodb-community-server:lat
 Once the container stars the MongoDB connection will be on `mongodb://localhost:27017/`
 
 
-1. Running the app as a Chat Application  
-You can run this app locally as a chat application using the `app.py` file. The app has been tested with Python 3.12.1. Make sure the MongoDB database is setup properly and with either the docker container option or the local installation options. Runnng on the docker container would be the easier option for testing locally.  
+1. **Running the app as a Chat Application**  
+You can run this app locally as a chat application using the `app.py` file. The app has been tested with Python 3.12.1.  
+Make sure the MongoDB database is setup properly with either the docker container option or the local installation option.  
+Running on the docker container would be the easier option for testing locally.  
    
 - Create a `.env` file inside the `app` folder with the following content and set the values such API Keys other relevant information:
 
@@ -87,16 +90,18 @@ You can also ask follow-up questions based on previous responses:
 Question: Explain {one of the listed updates from the previous response} in detail.
 ```
 
-2. Running as an API app
+2. **Running as an API app**  
 
-App can be used as an API using the `api.py` file as the starting point. Below instructions are to run the API app in a docker container and the MongoDB database base to be run in a separate container. 
-When running both app and the MongoDB database in separate containers, the APP should be able to connect to the MongoDB database instance running in a separate container.    
+App can also be used as an API using the `api.py` file as the starting point.  
+Below instructions are to run the API app in a docker container and the MongoDB database base to be run in a separate container.  
+When running both app and the MongoDB database in separate containers, the APP should be able to connect to the MongoDB database instance running in a separate container.  
 See the all options with running MongoDB database in a container and connecting to it [here](https://www.mongodb.com/resources/products/compatibilities/docker)
 
 Using a docker compose file will be easier to get the containers linked and run the app. Below show how you can rung each container individually and get it working. 
 
-1. Build the main app using the Dockerfile and create an image. 
+1. ***Build the main app using the Dockerfile and create an image.***  
    Including Dockerfile arguments can be useful for automated builds, as they allow you to pass variables from your CI/CD pipeline directly into the Dockerfile.  
+     
    When running the Docker container locally, you can also pass these Dockerfile arguments directly from the command line using the following syntax:
 
    ```bash
@@ -111,9 +116,10 @@ Using a docker compose file will be easier to get the containers linked and run 
           --build-arg UPDATED_DOCUMENT_URL=updated_document_web_url \
           --build-arg DATABASE_CONNECTION_URL="mongodb://llm-mongodb:27017" 
    ```
-2. Running the app and the MongoDB database in their own containers.   
-   Since the there are two container running which needs to be communitcating with each other, it makes sense to run the container in the same docker network. 
-   Once you have you docker network created you can specify the network name with the `--network` with `docker run` command. 
+2. ***Running the app and the MongoDB database in their own containers.***   
+   Since the there are two container running which needs to be communitcating with each other, it makes sense to run the container in the same docker network.  
+     
+   When you have you docker network created you can specify the network name with the `--network` with `docker run` command. 
 
    - **See existing docker networks** 
    ```bash
@@ -121,7 +127,7 @@ Using a docker compose file will be easier to get the containers linked and run 
    ```
    This will list existing docker networks. You can chose to run your containers using an existing docker network or create a new network specific for LLM app.
 
-   - **Create a docker network**
+   - **Creating a new docker network**
    ```bash
     docker network create llm-network
    ```
@@ -131,11 +137,12 @@ Using a docker compose file will be easier to get the containers linked and run 
    ```bash
      docker run --name llm-mongodb -d --network llm-network mongodb/mongodb-community-server:latest
    ``` 
-   in the above command, make sure to give the container a name via --name argument. When connecting to MongoDB database, the connection URL will need be referenced by this name. In the command above it is using the container name as `llm-mongodb` hence the connection URL will have to be `mongodb://{mongodb-container-name}:27017` which in this case it will be `mongodb://llm-mongodb:27017`
+   Make sure to give the container a name via --name argument like in the command above. When connecting to MongoDB database, the connection URL will need to be referenced by this name. In the command above it is using the container name as `llm-mongodb`, hence the connection URL will have to be `mongodb://{mongodb-container-name}:27017` which in this case `mongodb://llm-mongodb:27017`
    
    - **Running the app container**
-   Make sure to give the same network name that given in the MongoDB docker container run command. `--network llm-network`
-   The API app willbe exposed via port 5000
+   Make sure to give the same network name that was given in the MongoDB docker container run command. `--network llm-network`  
+
+   The API app will be exposed via port 5000
 
    ```bash
     docker run --network llm-network -it -p 5000:5000 app_image_id
